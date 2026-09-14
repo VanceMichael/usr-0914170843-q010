@@ -8,6 +8,7 @@ COPY contracts ./contracts
 COPY migrations ./migrations
 COPY tests ./tests
 RUN python -m pytest
+RUN chown -R service:service /app
 USER service
 EXPOSE 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
