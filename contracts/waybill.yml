@@ -1,0 +1,16 @@
+version: 1
+required_roles:
+  - origin_carrier
+  - transit_carrier
+  - destination_carrier
+  - border_agency
+document_types:
+  - waybill_translation
+  - inspection_declaration
+  - handover_receipt
+signature_scope:
+  fields:
+    - waybill_id
+    - document_version
+    - role
+    - document_digest

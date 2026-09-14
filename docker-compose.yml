@@ -1,0 +1,31 @@
+services:
+  app:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://waybill:waybill@db:5432/waybill
+      REDIS_URL: redis://cache:6379/0
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: waybill
+      POSTGRES_USER: waybill
+      POSTGRES_PASSWORD: waybill
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U waybill"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+  cache:
+    image: redis:8-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
